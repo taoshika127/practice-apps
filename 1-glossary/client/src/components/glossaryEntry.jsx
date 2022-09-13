@@ -11,17 +11,19 @@ class GlossaryEntry extends React.Component {
     e.preventDefault();
     this.setState({contentEditable: true});
     this.setState({btnVal: 'Save Change'});
-    this.setState({old: {word: document.getElementById(`word${this.props.id}`).innerHTML, definition: document.getElementById(`definition${this.props.id}`).innerHTML}});
+    this.setState({old: {word: document.getElementById(`word${this.props.id}`).innerText, definition: document.getElementById(`definition${this.props.id}`).innerText}});
   }
 
   handleSaveChange(e) {
     e.preventDefault();
-    var newEntry = {word: document.getElementById(`word${this.props.id}`).innerHTML, definition: document.getElementById(`definition${this.props.id}`).innerHTML};
+    var newEntry = {word: document.getElementById(`word${this.props.id}`).innerText, definition: document.getElementById(`definition${this.props.id}`).innerText};
     var oldEntry = this.state.old;
+    console.log(oldEntry, newEntry);
     axios.post('http://localhost:3000/edit', { oldEntry, newEntry })
       .then((response) => {
         this.props.handleChange(response.data);
         this.setState({contentEditable: false});
+        this.setState({btnVal: 'Edit Entry'});
       })
   }
 
