@@ -4,7 +4,7 @@ import axios from 'axios';
 class GlossaryEntry extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {btnVal: 'Edit Entry', contentEditable: false, old: {word: '', definition: ''}};
+    this.state = {btnVal: 'Edit', contentEditable: false, old: {word: '', definition: ''}};
   }
 
   handleEdit(e) {
@@ -23,7 +23,7 @@ class GlossaryEntry extends React.Component {
       .then((response) => {
         this.props.handleChange(response.data);
         this.setState({contentEditable: false});
-        this.setState({btnVal: 'Edit Entry'});
+        this.setState({btnVal: 'Edit'});
       })
   }
 
@@ -44,8 +44,8 @@ class GlossaryEntry extends React.Component {
         <p id={"word" + this.props.id} contentEditable={this.state.contentEditable} suppressContentEditableWarning={true}>{this.props.data.word}</p>
         <p><b>Definition: </b></p>
         <p id={"definition" + this.props.id} contentEditable={this.state.contentEditable} suppressContentEditableWarning={true}>{this.props.data.definition}</p>
-        <button id="edit" onClick={this.state.btnVal === 'Edit Entry'? this.handleEdit.bind(this) : this.handleSaveChange.bind(this)}>{this.state.btnVal}</button>
-        <button id="delete" onClick={this.handleDelete.bind(this)}>Delete Entry</button>
+        <button id="edit" onClick={this.state.btnVal === 'Edit'? this.handleEdit.bind(this) : this.handleSaveChange.bind(this)}>{this.state.btnVal}</button>
+        <button id="delete" onClick={this.handleDelete.bind(this)}>Delete</button>
       </div>
     )
   }
