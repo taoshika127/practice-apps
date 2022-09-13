@@ -1,15 +1,46 @@
 require("dotenv").config();
 
 const path = require("path");
+const isProduction = process.env.NODE_ENV == 'production';
+const stylesHandler = 'style-loader';
 
-/*
-  What should go here?  Great question!
+const SRC_DIR = path.join(__dirname, './client/src');
+const DIST_DIR = path.join(__dirname, './client/dist');
 
-  Before you go to documentation, verify which version of webpack
-  you are using.
+const config = {
+  entry: `${SRC_DIR}/index.jsx`,
+  output: {
+    path: DIST_DIR,
+    filename: 'main.js'
+  },
+  module: {
+    rules: [
+      {
+          test: /\.(js|jsx)$/i,
+          loader: 'babel-loader',
+      },
+      {
+          test: /\.css$/i,
+          use: [stylesHandler,'css-loader'],
+      },
+      {
+          test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+          type: 'asset',
+      },
 
-  Use this config to copy production versions of your
-  index.html and styles.css to dist folder upon build
-*/
+      // Add your rules for custom modules here
+      // Learn more about loaders from https://webpack.js.org/loaders/
+    ],
+  }
+}
 
-module.exports = {};
+module.exports = () => {
+  if (isProduction) {
+    config.mode = 'production';
+
+
+  } else {
+      config.mode = 'development';
+  }
+  return config;
+}
