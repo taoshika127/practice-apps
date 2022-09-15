@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class Confirmation extends React.Component {
   constructor (props) {
@@ -6,6 +7,12 @@ class Confirmation extends React.Component {
   }
 
   handleSubmit() {
+    axios.post('http://localhost:3000/form')
+      .then((response) => {
+        if(response.data === 'you have already purchased!') {
+          alert(response.data);
+        }
+      })
     this.props.handleClick()
   }
 

@@ -11,7 +11,7 @@ const app = express();
 
 // Adds `req.session_id` based on the incoming cookie value.
 // Generates a new session if one does not exist.
-app.use(sessionHandler);
+//app.use(sessionHandler);
 
 // Logs the time, session_id, method, and url of incoming requests.
 app.use(logger);
@@ -19,13 +19,26 @@ app.use(logger);
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-/**** 
- * 
- * 
+app.get('/error', (req, res) => {
+  res.send('you have already purchased! Cannot submit the form twice.')
+})
+
+/****
+ *
+ *
  * Other routes here....
  *
- * 
+ *
  */
+app.post('/form', (req, res) => {
+  if(!req.get("Cookie")) {
+    sessionHandler(req, res, () => {
+      res.send('purchase successful');
+    })
+  } else {
+    res.send('you have already purchased!');
+  }
+});
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
