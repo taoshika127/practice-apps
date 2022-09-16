@@ -7,9 +7,9 @@ class Confirmation extends React.Component {
   }
 
   handleSubmit() {
-    axios.post('http://localhost:3000/form')
+    axios.post('http://localhost:3000/form', this.props.form)
       .then((response) => {
-        if(response.data === 'you have already purchased!') {
+        if(response.data === 'You have already purchased!') {
           alert(response.data);
         }
       })

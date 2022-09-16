@@ -16,12 +16,10 @@ const app = express();
 // Logs the time, session_id, method, and url of incoming requests.
 app.use(logger);
 
+app.use(express.json());
+
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
-
-app.get('/error', (req, res) => {
-  res.send('you have already purchased! Cannot submit the form twice.')
-})
 
 /****
  *
@@ -33,10 +31,20 @@ app.get('/error', (req, res) => {
 app.post('/form', (req, res) => {
   if(!req.get("Cookie")) {
     sessionHandler(req, res, () => {
-      res.send('purchase successful');
+      db.connect((err) => {
+        if(err) {
+          console.error(err)
+        } else {
+          var q = db.saveQuery(req.body);
+          db.query(q, () => {
+            console.log('saved to db');
+            res.send('Purchase successful');
+          })
+        }
+      })
     })
   } else {
-    res.send('you have already purchased!');
+    res.send('You have already purchased!');
   }
 });
 
