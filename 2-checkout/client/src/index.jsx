@@ -35,12 +35,17 @@ class App extends React.Component {
 
 
   render() {
+    var components = [F1, F2, F3, Confirmation];
     return (
       <div>
-        <div>{(this.state.currentView === 1 ? <F1 handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
-        <div>{(this.state.currentView === 2 ? <F2 handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
-        <div>{(this.state.currentView === 3 ? <F3 handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
-        <div>{(this.state.currentView === 4 ? <Confirmation handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
+        {components.map((component, index) => {
+          if (this.state.currentView === index + 1) {
+            var ReactComponent = React.createElement(component, {key: index, handleClick: this.proceedToNextView.bind(this), form: this.state.form})
+            return ReactComponent;
+          } else {
+            return null;
+          }
+        })}
         <button onClick={this.proceedToNextView.bind(this)} style={{display: this.state.btnHidden}}>Checkout</button>
       </div>
     )
@@ -50,3 +55,8 @@ class App extends React.Component {
 
 const root = createRoot(document.getElementById('root'));
 root.render(<App />);
+
+{/* <div>{(this.state.currentView === 1 ? <F1 handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
+        <div>{(this.state.currentView === 2 ? <F2 handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
+        <div>{(this.state.currentView === 3 ? <F3 handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div>
+        <div>{(this.state.currentView === 4 ? <Confirmation handleClick={this.proceedToNextView.bind(this)} form={this.state.form}/> : null)}</div> */}
